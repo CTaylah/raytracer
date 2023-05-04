@@ -3,12 +3,14 @@
 #include <iostream>
 
 int main() {
-    Vec3 vec3(1.0f, 2.0f, 3.0f);
-    Vec3 vec4(1.0f, 2.0f, 3.0f);
-    Vec3 vec7 = vec3 + vec4;
-    
 
-    std::cout << vec7.x << std::endl;
+    Vec3 lowerLeft(-1.777779f, -1.0f, -1.0f);
+    Vec3 u(0.0f,0.0f,0.0f);
+    Vec3 v(0.0f, 2.0f, 0.0f);
+    Vec3 origin(0.0f, 0.0f, 0.0f);
 
+    Vec3 direction = lowerLeft + u;
+
+    std::cout << direction << std::endl;
     return 0;
 }

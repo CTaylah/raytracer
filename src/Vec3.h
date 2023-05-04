@@ -10,22 +10,18 @@ struct Vec3
 
     float x, y, z;
 
-    inline float LengthSquared()
+    float LengthSquared()
     {
         return x * x + y * y + z * z;
     }
 
-    inline float Length()
+    float Length()
     {
         return std::sqrt(LengthSquared());
     }
 
-    inline Vec3 operator+(const Vec3& other)
-    {
-        return Vec3(x + other.x, y + other.y, z + other.z);
-    }
-
-    inline Vec3& operator+=(const Vec3& other)
+    Vec3 operator-() const { return Vec3(-x, -y, -z); }
+    Vec3& operator+=(const Vec3& other)
     {
         x += other.x;
         y += other.y; 
@@ -33,18 +29,7 @@ struct Vec3
 
         return *this;
     }
-
-    inline Vec3 operator-(const Vec3& other)
-    {
-        return Vec3(x - other.x, y - other.y, z - other.z);
-    }
-
-    inline Vec3 operator*(const Vec3& other)
-    {
-        return Vec3(x * other.x, y * other.y, z * other.z);
-    }
-
-    inline Vec3& operator*=(const Vec3& other)
+    Vec3& operator*=(const Vec3& other)
     {
         x *= other.x;
         y *= other.y;
@@ -53,12 +38,7 @@ struct Vec3
         return *this;
     }
 
-    inline Vec3 operator*(float scalar)
-    {
-        return Vec3(x * scalar, y * scalar, z * scalar);
-    }
-
-    inline Vec3& operator*=(float scalar)
+    Vec3& operator*=(float scalar)
     {
         x *= scalar;
         y *= scalar;
@@ -67,24 +47,9 @@ struct Vec3
         return *this;
     } 
 
-    inline Vec3 operator/(float scalar)
+    Vec3& operator/=(float scalar)
     {
-        return Vec3(x / scalar, y / scalar, z / scalar);
-    }
-
-    inline Vec3& operator/=(float scalar)
-    {
-        x /= scalar;
-        y /= scalar;
-        z /= scalar;
-
-        return *this;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec)
-    {
-        os << vec.x << " " << vec.y << " " << vec.z;
-        return os;
+        return *this *= 1/scalar;
     }
 
 };
@@ -96,3 +61,48 @@ void WriteColor(std::ostream& out, Vec3 pixelColor)
         << static_cast<int>(255.999 * pixelColor.y) << ' '
         << static_cast<int>(255.999 * pixelColor.z) << '\n';
 }
+
+inline Vec3 operator*(const Vec3& vector, const float scalar)
+{
+    return Vec3(vector.x * scalar,vector.y * scalar, vector.z  * scalar);
+}
+
+inline Vec3 operator*(const float scalar, const Vec3& vector)
+
+{
+    return Vec3(vector.x * scalar,vector.y * scalar, vector.z  * scalar);
+}
+
+inline Vec3 operator*(const Vec3& vector1, const Vec3& vector2)
+{
+    return Vec3(vector1.x * vector2.x, vector1.y * vector2.y, vector1.z * vector2.z);
+}
+
+
+inline Vec3 operator/(const Vec3& vector, const float scalar )
+{
+    return vector * (1/scalar);
+}
+
+inline Vec3 operator+(const Vec3& vector1, const Vec3& vector2)
+{
+    return Vec3(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z);
+}
+
+inline Vec3 operator-(const Vec3& vector1, const Vec3& vector2)
+{
+
+    return Vec3(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
+}
+
+std::ostream& operator<<(std::ostream& os, const Vec3& vec)
+{
+    os << vec.x << " " << vec.y << " " << vec.z;
+    return os;
+}
+
+inline Vec3 UnitVector(Vec3 vector)
+{
+    return vector / vector.Length();
+}
+

@@ -1,9 +1,30 @@
 #include "Vec3.h"
+#include "Ray.h"
 
 #include <iostream>
 
+Vec3 RayColor(const Ray& r){
+    Vec3 unitDirection = UnitVector(r.GetDirection());
+    float t = 0.5f * (unitDirection.y + 1.0f);
+    return (1.0f - t) * Vec3(1.0f, 1.0f, 1.0f) + t * Vec3(0.5f, 0.7f, 1.0f);
+}
+
 int main() {
-    const int image_width = 256, image_height = 256;
+    const float aspectRatio= 16.0f / 9.0f;
+    const int image_width = 400; 
+    const int image_height = static_cast<int>(image_width/ aspectRatio);
+
+
+    float viewportHeight = 2.0f, viewportWidth = aspectRatio * viewportHeight;
+    float focalLength = 1.0f;
+
+    Vec3 cameraPosition;
+    Vec3 horizontal(viewportWidth, 0.0f, 0.0f);
+    Vec3 vertical (0.0f, viewportHeight, 0.0f);
+
+    Vec3 lowerLeft = cameraPosition - (horizontal/2.0f) - (vertical/2) - Vec3(0,0,focalLength);
+
+
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n"; 
 
@@ -11,14 +32,14 @@ int main() {
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
             //Colors are normalized
-            auto r = float(i) / (image_width - 1);
-            auto g = float(j) / (image_height - 1);
-            auto b = 0.25;
+            float u = float(i) / (image_width - 1);
+            float v = float(j) / (image_height - 1);
 
-            Vec3 color(r,g,b);
-            WriteColor(std::cout, color);
+            Ray ray(cameraPosition, lowerLeft + u * horizontal + v * vertical - cameraPosition);
+            Vec3 pixelColor = RayColor(ray);
+            WriteColor(std::cout, pixelColor);
         }
     }
-
+    std::cerr << "\nDone\n";
     return 0;
 }

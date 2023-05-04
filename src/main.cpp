@@ -3,9 +3,51 @@
 
 #include <iostream>
 
+
+struct HitData
+{
+    HitData(bool hit, const Vec3& point) : hit(hit), point(point) {}
+    bool hit;
+    Vec3 point;
+    //Vec3 color;
+};
+
+
+
+HitData hitSphere(const Vec3& center, float radius, const Ray& ray)
+{
+    Vec3 direction = ray.GetDirection();
+    Vec3 origin = ray.GetOrigin();
+
+    float a = Dot(direction, direction);
+    float b = 2 * Dot(direction, origin - center);
+    float c = Dot(origin - center, origin - center) - radius * radius;
+    
+    float discriminant= b * b - 4 * a * c;
+
+    if(discriminant < 0) 
+        return HitData(false, Vec3(0.0f,0.0f,0.0f));
+
+    float t = ((-b - std::sqrt(discriminant)) / (2.0f * a));
+
+    if(t < 0.0f) 
+        return HitData(false, Vec3(0.0f,0.0f,0.0f));
+
+    return HitData(true, ray.At(t));
+}
+
+
 Vec3 RayColor(const Ray& r){
     Vec3 unitDirection = UnitVector(r.GetDirection());
     float t = 0.5f * (unitDirection.y + 1.0f);
+
+    HitData hitData = hitSphere(Vec3(0.0f, 0.0f, -1.0f), 0.5f, r);
+
+    if(hitData.hit) {
+        Vec3 normal = UnitVector(hitData.point - Vec3(0.0f, 0.0f, -1.0f));
+        Vec3 color = 0.5f * Vec3(normal.x + 1, normal.y + 1, normal.z + 1);
+        return color;
+    }
     return (1.0f - t) * Vec3(1.0f, 1.0f, 1.0f) + t * Vec3(0.5f, 0.7f, 1.0f);
 }
 

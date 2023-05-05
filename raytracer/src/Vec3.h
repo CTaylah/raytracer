@@ -55,7 +55,7 @@ struct Vec3
 };
 
 //Assumes color is normalized then writes 0-255 rgb values
-void WriteColor(std::ostream& out, Vec3 pixelColor)
+inline void WriteColor(std::ostream& out, Vec3 pixelColor)
 {
     out << static_cast<int>(255.999 * pixelColor.x) << ' '
         << static_cast<int>(255.999 * pixelColor.y) << ' '
@@ -88,7 +88,7 @@ inline Vec3 operator-(const Vec3& vector1, const Vec3& vector2)
     return Vec3(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
 }
 
-std::ostream& operator<<(std::ostream& os, const Vec3& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vec3& vec)
 {
     os << vec.x << " " << vec.y << " " << vec.z;
     return os;
@@ -99,7 +99,7 @@ inline float Dot(Vec3 vector1, Vec3 vector2)
    return((vector1.x * vector2.x) + (vector1.y * vector2.y) + (vector1.z * vector2.z));
 }
 
-Vec3 Cross(const Vec3& vector1, const Vec3& vector2)
+inline Vec3 Cross(const Vec3& vector1, const Vec3& vector2)
 {
     float x = (vector1.y * vector2.z) - (vector1.z * vector2.y);
     float y = (vector1.z * vector2.x) - (vector1.x * vector2.z);

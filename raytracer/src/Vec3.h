@@ -10,12 +10,12 @@ struct Vec3
 
     float x, y, z;
 
-    float LengthSquared()
+    float LengthSquared() const
     {
         return x * x + y * y + z * z;
     }
 
-    float Length()
+    float Length() const
     {
         return std::sqrt(LengthSquared());
     }
@@ -29,7 +29,7 @@ struct Vec3
 
         return *this;
     }
-    Vec3& operator*=(const Vec3& other)
+    Vec3& operator*=(const Vec3& other) 
     {
         x *= other.x;
         y *= other.y;
@@ -53,14 +53,6 @@ struct Vec3
     }
 
 };
-
-//Assumes color is normalized then writes 0-255 rgb values
-inline void WriteColor(std::ostream& out, Vec3 pixelColor)
-{
-    out << static_cast<int>(255.999 * pixelColor.x) << ' '
-        << static_cast<int>(255.999 * pixelColor.y) << ' '
-        << static_cast<int>(255.999 * pixelColor.z) << '\n';
-}
 
 inline Vec3 operator*(const Vec3& vector, const float scalar)
 {
@@ -94,7 +86,7 @@ inline std::ostream& operator<<(std::ostream& os, const Vec3& vec)
     return os;
 }
 
-inline float Dot(Vec3 vector1, Vec3 vector2)
+inline float Dot(const Vec3& vector1, const Vec3& vector2)
 {
    return((vector1.x * vector2.x) + (vector1.y * vector2.y) + (vector1.z * vector2.z));
 }
@@ -107,7 +99,7 @@ inline Vec3 Cross(const Vec3& vector1, const Vec3& vector2)
     return Vec3(x, y, z);
 }
 
-inline Vec3 UnitVector(Vec3 vector)
+inline Vec3 UnitVector(const Vec3& vector)
 {
     return vector / vector.Length();
 }

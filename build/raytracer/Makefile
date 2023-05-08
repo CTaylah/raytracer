@@ -63,8 +63,10 @@ endif
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/Camera.o
 GENERATED += $(OBJDIR)/Sphere.o
 GENERATED += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/Camera.o
 OBJECTS += $(OBJDIR)/Sphere.o
 OBJECTS += $(OBJDIR)/main.o
 
@@ -130,6 +132,9 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/Camera.o: ../../raytracer/src/Camera.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Sphere.o: ../../raytracer/src/Sphere.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"

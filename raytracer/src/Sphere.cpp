@@ -1,6 +1,6 @@
 #include "Sphere.h"
 
-HitData Sphere::Hit(const Ray& ray)
+HitData Sphere::Hit(const Ray& ray, float tMin, float tMax)
 {
    
     Vec3 direction = ray.GetDirection();
@@ -13,14 +13,39 @@ HitData Sphere::Hit(const Ray& ray)
     float discriminant= b * b - 4 * a * c;
 
     if(discriminant < 0) 
-        return HitData(false, Vec3(0.0f,0.0f,0.0f));
+        return HitData(false);
 
-    float t = ((-b - std::sqrt(discriminant)) / (2.0f * a));
+    float sqrtDiscriminat = std::sqrt(discriminant);
+    
 
-    if(t < 0.0f) 
-        return HitData(false, Vec3(0.0f,0.0f,0.0f));
+    float t = ((-b - sqrtDiscriminat) / (2.0f * a));
 
-    return HitData(true, ray.At(t));
+    if(t < tMin || t > tMax){
+        t = ((-b + sqrtDiscriminat) / (2.0f * a));
+        if(t < tMin || t > tMax)
+            return HitData(false);
+    }
 
+    Vec3 point = ray.At(t);
+    Vec3 normal = UnitVector(point - m_center); 
+    return HitData(true, ray, t, normal);
  
+}
+
+HitData SphereList::Hit(const Ray& ray, float tMin, float tMax) const
+{
+    float closestHit = tMax; // t value of the closest hit.
+    
+    HitData data(false);
+
+    for(const auto& sphere : m_sphereList)
+    {
+        HitData tempData = sphere->Hit(ray, tMin, closestHit);
+        if(tempData.hit)
+        {
+            closestHit = tempData.distance;
+            data = tempData;
+        }
+    }
+    return data;
 }

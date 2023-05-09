@@ -3,11 +3,19 @@
 #include "Vec3.h"
 
 
+struct Material
+{
+    Material(const Vec3& albedo) : albedo(albedo) {}
+    Material() : albedo(0.5f,0.5f,0.5f) {}
+    Vec3 albedo;
+};
+
+
 struct HitData
 {
     //outawardNormal:
-    HitData(bool hit, const Ray& ray, float t, const Vec3& outwardNormal) 
-        : hit(hit) 
+    HitData(bool hit, const Ray& ray, float t, const Vec3& outwardNormal, Material material) 
+        : hit(hit), material(material) 
     {
         point = ray.At(t); 
         distance = t;
@@ -28,6 +36,7 @@ struct HitData
     bool frontFace;
     
     Vec3 normal;
+    Material material;
 };
 
 

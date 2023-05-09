@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Util.h"
+
 #include <cmath>
 #include <iostream>
 
@@ -50,6 +52,11 @@ struct Vec3
     Vec3& operator/=(float scalar)
     {
         return *this *= 1/scalar;
+    }    
+
+    inline static Vec3 Random()
+    {
+        return Vec3(Util::RandomFloat(), Util::RandomFloat(), Util::RandomFloat());
     }
 
 };

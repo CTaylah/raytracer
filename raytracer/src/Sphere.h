@@ -10,6 +10,7 @@ class Sphere
 {
 public:
     Sphere(float radius, Vec3 center) : m_radius(radius), m_center(center) {}
+    Sphere(float radius, Vec3 center, Material mat) : m_radius(radius), m_center(center), m_material(mat) {}
     float GetRadius() const { return m_radius; };
     Vec3 GetCenter() const { return m_center; };
 
@@ -19,6 +20,7 @@ private:
     float m_radius;
     Vec3 m_center;
     Vec3 m_color;
+    Material m_material;
 
 };
 

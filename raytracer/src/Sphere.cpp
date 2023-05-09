@@ -28,13 +28,13 @@ HitData Sphere::Hit(const Ray& ray, float tMin, float tMax)
 
     Vec3 point = ray.At(t);
     Vec3 normal = UnitVector(point - m_center); 
-    return HitData(true, ray, t, normal);
+    return HitData(true, ray, t, normal, m_material);
  
 }
 
 HitData SphereList::Hit(const Ray& ray, float tMin, float tMax) const
 {
-    float closestHit = tMax; // t value of the closest hit.
+    float closestHit = tMax; //t value of the closest hit.
     
     HitData data(false);
 
